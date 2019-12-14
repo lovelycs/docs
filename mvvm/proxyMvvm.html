@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <input id="myinput"/>
+        <input id="i"/>
+        <div id="submit">submit</div>
+
+        <script src="./proxyListenObj.js"></script>
+        <script src="./proxyMvvM.js"></script>
+        <script>
+            const el = document.getElementById('myinput');
+
+            let mvvm = new window.proxyMvvm({
+                elInfoList: [{
+                    el: document.getElementById('myinput'),
+                    value: 'x'
+                }, {
+                    el: document.getElementById('submit'),
+                    value: 'x'
+                }],
+                watch: {
+                    x: function(val, oldVal) {
+                        console.log('watchX  myinput', val, oldVal);
+                    },
+                    y: function(val, oldVal) {
+                        console.log('watchY  Array', val, oldVal);
+                    },
+                    z: function(val, oldVal) {
+                        console.log('watchZ Object+Array', val, oldVal);
+                    }
+                },
+                beforeCreate: () => {
+                    console.log('beforeCreate')
+                },
+                created: () => {
+                    console.log('created')
+                },
+                beforeMount: () => {
+                    console.log('beforeMount')
+                },
+                mounted() {
+                    console.log('mounted')
+                }
+            });
+
+            mvvm.x = 'ssdsdsd';
+
+            mvvm.y = [];
+
+            mvvm.z = { a: [1], z: 'x', c: { a: 'sdsd'} }
+
+            document.getElementById('submit').addEventListener('click', function(e) {
+                mvvm.x = document.getElementById('i').value;
+                mvvm.y.push(1);
+                mvvm.z.c.a = 'sdsdsd';
+            });
+        </script>
+    </body>
+</html>

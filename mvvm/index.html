@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <input id="myinput"/>
+        <input id="i"/>
+        <div id="submit">submit</div>
+
+        <script src="./myMvvm.js"></script>
+        <script>
+            const data = { x: 'sddsss' };
+            const el = document.getElementById('myinput');
+
+            let mvvm = new window.proxyMvvm({
+                data, 
+                elInfoList: [{
+                    el: document.getElementById('myinput'),
+                    value: 'x'
+                }, {
+                    el: document.getElementById('submit'),
+                    value: 'x'
+                }], 
+                watch: {
+                    x: function(val, oldVal) {
+                        console.log('watchX  myinput', val, oldVal);
+                    }
+                },
+                beforeCreate: () => {
+                    console.log('beforeCreate')
+                },
+                created: () => {
+                    console.log('created')
+                },
+                beforeMount: () => {
+                    console.log('beforeMount')
+                },
+                mounted() {
+                    console.log('mounted')
+                }
+            });
+
+            document.getElementById('submit').addEventListener('click', function(e) {
+                mvvm.x = document.getElementById('i').value;
+            });
+        </script>
+    </body>
+</html>
